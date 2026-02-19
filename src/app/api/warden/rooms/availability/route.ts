@@ -11,13 +11,14 @@ export async function GET() {
   const block = context.warden?.block ?? null;
 
   const rooms = await prisma.room.findMany({
-    where: block ? { block: { id: block.id } } : undefined,
+    where: block ? { blockId: block.id } : undefined,
+    include: { block: true },
   });
 
   const roomStatus = rooms.map((room) => ({
     id: room.id,
     roomNumber: room.roomNumber,
-    block: room.block.name,
+    blockName: room.block.name,
     capacity: room.capacity,
     occupied: room.occupied,
     available: room.capacity - room.occupied,

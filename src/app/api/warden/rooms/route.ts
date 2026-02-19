@@ -11,9 +11,9 @@ export async function GET() {
   const block = context.warden?.block ?? null;
 
   const rooms = await prisma.room.findMany({
-    where: block ? { block } : undefined,
-    include: { students: true },
-    orderBy: [{ block: "asc" }, { roomNumber: "asc" }],
+    where: block ? { blockId: block.id } : undefined,
+    include: { students: true, block: true },
+    orderBy: [{ roomNumber: "asc" }],
   });
 
   return NextResponse.json({ rooms });

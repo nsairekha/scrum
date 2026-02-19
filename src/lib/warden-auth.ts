@@ -15,7 +15,7 @@ export async function getWardenContext() {
 
   const warden = await prisma.warden.findUnique({
     where: { userId: payload.sub },
-    include: { user: true },
+    include: { user: true, block: true },
   });
 
   if (payload.role === Role.WARDEN && !warden) {
