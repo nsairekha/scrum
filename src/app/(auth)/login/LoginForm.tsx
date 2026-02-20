@@ -23,15 +23,17 @@ export default function LoginForm() {
     });
 
     if (!response.ok) {
-      const payload = await response.json().catch(() => null);
+      const { safeJson } = await import("@/lib/safe-json");
+      const payload = await safeJson(response);
       setError(payload?.error ?? "Login failed");
       setIsSubmitting(false);
       return;
     }
 
     // Get user data to determine redirect
-    const data = await response.json();
-    const role = data.user?.role || "STUDENT";
+    const { safeJson } = await import("@/lib/safe-json");
+    const data = await safeJson(response);
+    const role = data?.user?.role || "STUDENT";
 
     // Use window.location for hard redirect to ensure cookies are loaded
     if (role === "ADMIN") {
@@ -56,7 +58,7 @@ export default function LoginForm() {
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none focus:border-zinc-400"
+          className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black outline-none focus:border-zinc-400"
           placeholder="student@hostel.local"
         />
       </div>
@@ -71,7 +73,7 @@ export default function LoginForm() {
           required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none focus:border-zinc-400"
+          className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black outline-none focus:border-zinc-400"
           placeholder="Minimum 8 characters"
         />
       </div>
@@ -84,8 +86,8 @@ export default function LoginForm() {
         {isSubmitting ? "Signing in..." : "Sign in"}
       </button>
       <div className="text-center text-sm">
-        Don't have an account?{" "}
-        <Link href="/signup" className="font-medium text-zinc-900 hover:underline">
+        Don&apos;t have an account?{" "}
+        <Link href="/signup" className="font-medium text-black hover:underline">
           Sign up
         </Link>
       </div>

@@ -12,11 +12,11 @@ export default function WardenAttendancePage() {
 
   useEffect(() => {
     fetch('/api/warden/students')
-      .then((r) => r.json())
-      .then((d) => {
-        setStudents(d.students || []);
+      .then(async (r) => {
+        const d = await (await import('@/lib/safe-json')).safeJson(r);
+        setStudents(d?.students || []);
         const map: Record<string, boolean> = {};
-        (d.students || []).forEach((s: Student) => (map[s.id] = true));
+        (d?.students || []).forEach((s: Student) => (map[s.id] = true));
         setChecked(map);
       })
       .finally(() => setLoading(false));
@@ -31,13 +31,13 @@ export default function WardenAttendancePage() {
     setSaving(false);
   };
 
-  if (loading) return <p className="text-sm text-zinc-500">Loading students...</p>;
+  if (loading) return <p className="text-sm text-black">Loading students...</p>;
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Mark Attendance</h1>
-  <p className="text-sm text-zinc-600">Toggle presence for students and save today&apos;s attendance.</p>
+        <h1 className="text-2xl font-semibold text-black">Mark Attendance</h1>
+  <p className="text-sm text-black">Toggle presence for students and save today&apos;s attendance.</p>
       </div>
 
       <div className="rounded-xl border border-zinc-200 bg-white p-4">
@@ -45,8 +45,8 @@ export default function WardenAttendancePage() {
           {students.map((s) => (
             <label key={s.id} className="flex items-center justify-between rounded-md border p-2">
               <div>
-                <div className="font-medium text-zinc-900">{s.user.name ?? s.user.email}</div>
-                <div className="text-sm text-zinc-600">Roll: {s.rollNo} {s.room && `• Room ${s.room.roomNumber}`}</div>
+                <div className="font-medium text-black">{s.user.name ?? s.user.email}</div>
+                <div className="text-sm text-black">Roll: {s.rollNo} {s.room && `• Room ${s.room.roomNumber}`}</div>
               </div>
               <input type="checkbox" checked={!!checked[s.id]} onChange={() => toggle(s.id)} />
             </label>

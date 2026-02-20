@@ -26,7 +26,9 @@ export default function StudentPaymentsPage() {
   };
 
   useEffect(() => {
-    loadPayments();
+    (async () => {
+      await loadPayments();
+    })();
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,8 +58,8 @@ export default function StudentPaymentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Payments</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Payments</h1>
+        <p className="text-sm text-black">
           Pay hostel fees and track payment history.
         </p>
       </div>
@@ -77,7 +79,7 @@ export default function StudentPaymentsPage() {
             value={amount}
             onChange={(event) => setAmount(event.target.value)}
             required
-            className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm"
+            className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
             placeholder="2500"
           />
         </div>
@@ -92,7 +94,7 @@ export default function StudentPaymentsPage() {
       </form>
       <div className="space-y-3">
         {payments.length === 0 ? (
-          <p className="text-sm text-zinc-500">No payments yet.</p>
+          <p className="text-sm text-black">No payments yet.</p>
         ) : (
           payments.map((payment) => (
             <div
@@ -100,14 +102,14 @@ export default function StudentPaymentsPage() {
               className="rounded-xl border border-zinc-200 bg-white p-4"
             >
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-zinc-900">
+                <p className="text-sm font-semibold text-black">
                   {Number(payment.amount).toFixed(2)}
                 </p>
-                <span className="text-xs uppercase text-zinc-500">
+                <span className="text-xs uppercase text-black">
                   {payment.status.replaceAll("_", " ")}
                 </span>
               </div>
-              <p className="mt-2 text-xs text-zinc-400">
+              <p className="mt-2 text-xs text-black">
                 {new Date(payment.paymentDate).toLocaleString()}
               </p>
             </div>

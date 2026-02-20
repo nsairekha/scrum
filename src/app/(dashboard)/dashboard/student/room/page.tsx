@@ -35,14 +35,14 @@ export default function StudentRoomPage() {
   }
 
   if (!data) {
-    return <p className="text-sm text-zinc-500">Loading room details...</p>;
+    return <p className="text-sm text-black">Loading room details...</p>;
   }
 
   if (!data.room) {
     return (
       <div className="space-y-2">
-        <h1 className="text-2xl font-semibold text-zinc-900">My Room</h1>
-        <p className="text-sm text-zinc-600">No room assigned yet.</p>
+        <h1 className="text-2xl font-semibold text-black">My Room</h1>
+        <p className="text-sm text-black">No room assigned yet.</p>
       </div>
     );
   }
@@ -50,32 +50,32 @@ export default function StudentRoomPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">My Room</h1>
-        <p className="text-sm text-zinc-600">Current room allocation.</p>
+        <h1 className="text-2xl font-semibold text-black">My Room</h1>
+        <p className="text-sm text-black">Current room allocation.</p>
       </div>
       <div className="rounded-xl border border-zinc-200 bg-white p-6">
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Block</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Block</dt>
+            <dd className="text-sm font-medium text-black">
               {data.room.block}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Room Number</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Room Number</dt>
+            <dd className="text-sm font-medium text-black">
               {data.room.roomNumber}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Capacity</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Capacity</dt>
+            <dd className="text-sm font-medium text-black">
               {data.room.capacity}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Occupied</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Occupied</dt>
+            <dd className="text-sm font-medium text-black">
               {data.room.occupied}
             </dd>
           </div>

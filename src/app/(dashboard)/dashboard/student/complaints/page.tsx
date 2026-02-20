@@ -58,8 +58,8 @@ export default function StudentComplaintsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Complaints</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Complaints</h1>
+        <p className="text-sm text-black">
           Submit a complaint and track its status.
         </p>
       </div>
@@ -76,7 +76,7 @@ export default function StudentComplaintsPage() {
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             required
-            className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm"
+            className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
             placeholder="Water leakage"
           />
         </div>
@@ -90,7 +90,7 @@ export default function StudentComplaintsPage() {
             onChange={(event) => setDescription(event.target.value)}
             required
             rows={4}
-            className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm"
+            className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-black placeholder:text-black"
             placeholder="Describe the issue..."
           />
         </div>
@@ -105,7 +105,7 @@ export default function StudentComplaintsPage() {
       </form>
       <div className="space-y-3">
         {complaints.length === 0 ? (
-          <p className="text-sm text-zinc-500">No complaints yet.</p>
+          <p className="text-sm text-black">No complaints yet.</p>
         ) : (
           complaints.map((complaint) => (
             <div
@@ -113,17 +113,17 @@ export default function StudentComplaintsPage() {
               className="rounded-xl border border-zinc-200 bg-white p-4"
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-zinc-900">
+                <h2 className="text-sm font-semibold text-black">
                   {complaint.title}
                 </h2>
-                <span className="text-xs uppercase text-zinc-500">
+                <span className="text-xs uppercase text-black">
                   {complaint.status.replaceAll("_", " ")}
                 </span>
               </div>
-              <p className="mt-2 text-sm text-zinc-600">
+              <p className="mt-2 text-sm text-black">
                 {complaint.description}
               </p>
-              <p className="mt-2 text-xs text-zinc-400">
+              <p className="mt-2 text-xs text-black">
                 {new Date(complaint.createdAt).toLocaleString()}
               </p>
             </div>

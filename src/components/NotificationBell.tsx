@@ -17,8 +17,9 @@ export function NotificationBell() {
     const loadNotifications = async () => {
       const response = await fetch("/api/notifications");
       if (response.ok) {
-        const data = (await response.json()) as { notifications: Notification[] };
-        setNotifications(data.notifications);
+        const { safeJson } = await import("@/lib/safe-json");
+        const data = (await safeJson(response)) as { notifications: Notification[] } | null;
+        setNotifications(data?.notifications || []);
       }
     };
 
@@ -48,7 +49,7 @@ export function NotificationBell() {
         <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border border-zinc-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
           <div className="max-h-96 overflow-y-auto p-4">
             {notifications.length === 0 ? (
-              <p className="text-xs text-zinc-500">No notifications</p>
+              <p className="text-xs text-black">No notifications</p>
             ) : (
               <div className="space-y-2">
                 {notifications.map((notif) => (
@@ -56,10 +57,10 @@ export function NotificationBell() {
                     key={notif.id}
                     className="rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800"
                   >
-                    <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    <p className="text-sm font-medium text-black dark:text-zinc-100">
                       {notif.message}
                     </p>
-                    <p className="mt-1 text-xs text-zinc-500">
+                    <p className="mt-1 text-xs text-black">
                       {new Date(notif.timestamp).toLocaleString()}
                     </p>
                   </div>

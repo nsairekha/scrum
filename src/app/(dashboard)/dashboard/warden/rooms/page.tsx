@@ -36,11 +36,12 @@ export default function WardenRoomsPage() {
         fetch("/api/warden/students"),
       ]);
       if (!roomsRes.ok || !studentsRes.ok) throw new Error("Failed to load data");
-      const roomsData = await roomsRes.json();
-      const studentsData = await studentsRes.json();
-      setRooms(roomsData.rooms);
+      const { safeJson } = await import("@/lib/safe-json");
+      const roomsData = await safeJson(roomsRes);
+      const studentsData = await safeJson(studentsRes);
+      setRooms(roomsData?.rooms || []);
       setUnassigned(
-        studentsData.students.filter((s: { room: unknown }) => s.room === null)
+        (studentsData?.students || []).filter((s: { room: unknown }) => s.room === null)
       );
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Error loading data");
@@ -66,7 +67,8 @@ export default function WardenRoomsPage() {
         body: JSON.stringify({ studentId: assignStudentId, roomId: assignRoomId }),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
+        const { safeJson } = await import("@/lib/safe-json");
+        const data = await safeJson(res);
         throw new Error(data?.error ?? "Assignment failed");
       }
       setAssignSuccess("Student assigned to room successfully!");
@@ -86,8 +88,8 @@ export default function WardenRoomsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Room Management</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Room Management</h1>
+        <p className="text-sm text-black">
           View room occupancy and assign students to rooms.
         </p>
       </div>
@@ -98,10 +100,10 @@ export default function WardenRoomsPage() {
           onSubmit={handleAssign}
           className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6"
         >
-          <h2 className="text-lg font-semibold text-zinc-900">Assign Student to Room</h2>
+          <h2 className="text-lg font-semibold text-black">Assign Student to Room</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700" htmlFor="student-select">
+              <label className="text-sm font-medium text-black" htmlFor="student-select">
                 Student
               </label>
               <select
@@ -109,7 +111,7 @@ export default function WardenRoomsPage() {
                 value={assignStudentId}
                 onChange={(e) => setAssignStudentId(e.target.value)}
                 required
-                className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm"
+                className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
               >
                 <option value="">Select student...</option>
                 {unassigned.map((s) => (
@@ -120,7 +122,7 @@ export default function WardenRoomsPage() {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700" htmlFor="room-select">
+              <label className="text-sm font-medium text-black" htmlFor="room-select">
                 Room
               </label>
               <select
@@ -128,7 +130,7 @@ export default function WardenRoomsPage() {
                 value={assignRoomId}
                 onChange={(e) => setAssignRoomId(e.target.value)}
                 required
-                className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm"
+                className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
               >
                 <option value="">Select room...</option>
                 {availableRooms.map((r) => (
@@ -153,34 +155,34 @@ export default function WardenRoomsPage() {
 
       {/* Room List */}
       {loading ? (
-        <p className="text-sm text-zinc-500">Loading rooms...</p>
+        <p className="text-sm text-black">Loading rooms...</p>
       ) : error ? (
         <p className="text-sm text-red-600">{error}</p>
       ) : rooms.length === 0 ? (
         <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-zinc-500">No rooms configured yet.</p>
+          <p className="text-sm text-black">No rooms configured yet.</p>
         </div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-zinc-200 bg-zinc-50">
               <tr>
-                <th className="px-4 py-3 font-medium text-zinc-600">Block</th>
-                <th className="px-4 py-3 font-medium text-zinc-600">Room</th>
-                <th className="px-4 py-3 font-medium text-zinc-600">Capacity</th>
-                <th className="px-4 py-3 font-medium text-zinc-600">Occupied</th>
-                <th className="px-4 py-3 font-medium text-zinc-600">Status</th>
+                <th className="px-4 py-3 font-medium text-black">Block</th>
+                <th className="px-4 py-3 font-medium text-black">Room</th>
+                <th className="px-4 py-3 font-medium text-black">Capacity</th>
+                <th className="px-4 py-3 font-medium text-black">Occupied</th>
+                <th className="px-4 py-3 font-medium text-black">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
               {rooms.map((room) => (
                 <tr key={room.id} className="hover:bg-zinc-50">
-                  <td className="px-4 py-3 font-medium text-zinc-900">
+                  <td className="px-4 py-3 font-medium text-black">
                     {room.block.name}
                   </td>
-                  <td className="px-4 py-3 text-zinc-600">{room.roomNumber}</td>
-                  <td className="px-4 py-3 text-zinc-600">{room.capacity}</td>
-                  <td className="px-4 py-3 text-zinc-600">{room.occupied}</td>
+                  <td className="px-4 py-3 text-black">{room.roomNumber}</td>
+                  <td className="px-4 py-3 text-black">{room.capacity}</td>
+                  <td className="px-4 py-3 text-black">{room.occupied}</td>
                   <td className="px-4 py-3">
                     {room.occupied >= room.capacity ? (
                       <span className="inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">

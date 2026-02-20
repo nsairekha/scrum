@@ -35,25 +35,25 @@ export default function StudentAnnouncementsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Announcements</h1>
-        <p className="text-sm text-zinc-600">Latest hostel updates.</p>
+        <h1 className="text-2xl font-semibold text-black">Announcements</h1>
+        <p className="text-sm text-black">Latest hostel updates.</p>
       </div>
       <div className="space-y-4">
         {announcements.length === 0 ? (
-          <p className="text-sm text-zinc-500">No announcements yet.</p>
+          <p className="text-sm text-black">No announcements yet.</p>
         ) : (
           announcements.map((announcement) => (
             <div
               key={announcement.id}
               className="rounded-xl border border-zinc-200 bg-white p-4"
             >
-              <h2 className="text-sm font-semibold text-zinc-900">
+              <h2 className="text-sm font-semibold text-black">
                 {announcement.title}
               </h2>
-              <p className="mt-2 text-sm text-zinc-600">
+              <p className="mt-2 text-sm text-black">
                 {announcement.message}
               </p>
-              <p className="mt-3 text-xs text-zinc-400">
+              <p className="mt-3 text-xs text-black">
                 {announcement.createdBy.name ?? announcement.createdBy.email} ·{" "}
                 {new Date(announcement.createdAt).toLocaleString()}
               </p>

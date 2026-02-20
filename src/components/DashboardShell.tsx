@@ -57,27 +57,27 @@ export default function DashboardShell({
         }`}
       >
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold text-zinc-900">
+          <Link href="/" className="text-sm font-semibold text-black">
             Hostel Management
           </Link>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="rounded-md p-2 text-zinc-500 hover:text-zinc-900 md:hidden"
+            className="rounded-md p-2 text-black hover:text-black md:hidden"
             aria-label="Close menu"
           >
             ✕
           </button>
         </div>
-        <div className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
-          Role: <span className="font-semibold text-zinc-900">{role}</span>
+        <div className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-black">
+          Role: <span className="font-semibold text-black">{role}</span>
         </div>
         <nav className="mt-6 space-y-1">
           {menuItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="block rounded-md px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100"
+              className="block rounded-md px-3 py-2 text-sm text-black hover:bg-zinc-100"
               onClick={() => setIsOpen(false)}
             >
               {item.label}
@@ -102,22 +102,22 @@ export default function DashboardShell({
               <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="rounded-md border border-zinc-200 px-2 py-1 text-sm text-zinc-600 md:hidden"
+                className="rounded-md border border-zinc-200 px-2 py-1 text-sm text-black md:hidden"
                 aria-label="Open menu"
               >
                 Menu
               </button>
-              <span className="text-sm font-semibold text-zinc-900">
+              <span className="text-sm font-semibold text-black">
                 Dashboard
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="hidden text-sm text-zinc-600 dark:text-zinc-400 md:block">
+              <span className="hidden text-sm text-black dark:text-black md:block">
                 {userEmail}
               </span>
               <NotificationBell />
               <ThemeToggle />
-              <Link href="/login" className="text-sm text-zinc-600 dark:text-zinc-400">
+              <Link href="/login" className="text-sm text-black dark:text-black">
                 Switch account
               </Link>
             </div>

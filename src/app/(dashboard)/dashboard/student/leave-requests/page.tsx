@@ -30,7 +30,9 @@ export default function StudentLeaveRequestsPage() {
   };
 
   useEffect(() => {
-    loadRequests();
+    (async () => {
+      await loadRequests();
+    })();
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -61,8 +63,8 @@ export default function StudentLeaveRequestsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Leave Requests</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Leave Requests</h1>
+        <p className="text-sm text-black">
           Apply for leave and view approval status.
         </p>
       </div>
@@ -81,7 +83,7 @@ export default function StudentLeaveRequestsPage() {
               value={fromDate}
               onChange={(event) => setFromDate(event.target.value)}
               required
-              className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm"
+              className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
             />
           </div>
           <div className="space-y-2">
@@ -94,7 +96,7 @@ export default function StudentLeaveRequestsPage() {
               value={toDate}
               onChange={(event) => setToDate(event.target.value)}
               required
-              className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm"
+              className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
             />
           </div>
         </div>
@@ -108,7 +110,7 @@ export default function StudentLeaveRequestsPage() {
             onChange={(event) => setReason(event.target.value)}
             required
             rows={3}
-            className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm"
+            className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-black placeholder:text-black"
           />
         </div>
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
@@ -122,7 +124,7 @@ export default function StudentLeaveRequestsPage() {
       </form>
       <div className="space-y-3">
         {requests.length === 0 ? (
-          <p className="text-sm text-zinc-500">No leave requests yet.</p>
+          <p className="text-sm text-black">No leave requests yet.</p>
         ) : (
           requests.map((request) => (
             <div
@@ -130,15 +132,15 @@ export default function StudentLeaveRequestsPage() {
               className="rounded-xl border border-zinc-200 bg-white p-4"
             >
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-zinc-900">
+                <p className="text-sm font-semibold text-black">
                   {new Date(request.fromDate).toLocaleDateString()} -{" "}
                   {new Date(request.toDate).toLocaleDateString()}
                 </p>
-                <span className="text-xs uppercase text-zinc-500">
+                <span className="text-xs uppercase text-black">
                   {request.status.replaceAll("_", " ")}
                 </span>
               </div>
-              <p className="mt-2 text-sm text-zinc-600">{request.reason}</p>
+              <p className="mt-2 text-sm text-black">{request.reason}</p>
             </div>
           ))
         )}

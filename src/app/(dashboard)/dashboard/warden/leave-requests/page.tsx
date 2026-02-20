@@ -20,7 +20,7 @@ const STATUS_COLORS: Record<string, string> = {
   PENDING: "bg-amber-50 text-amber-700",
   APPROVED: "bg-green-50 text-green-700",
   REJECTED: "bg-red-50 text-red-700",
-  CANCELLED: "bg-zinc-100 text-zinc-600",
+  CANCELLED: "bg-zinc-100 text-black",
 };
 
 export default function WardenLeaveRequestsPage() {
@@ -66,19 +66,19 @@ export default function WardenLeaveRequestsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Leave Requests</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Leave Requests</h1>
+        <p className="text-sm text-black">
           Review and approve or reject student leave applications.
         </p>
       </div>
 
       {loading ? (
-        <p className="text-sm text-zinc-500">Loading leave requests...</p>
+        <p className="text-sm text-black">Loading leave requests...</p>
       ) : error ? (
         <p className="text-sm text-red-600">{error}</p>
       ) : requests.length === 0 ? (
         <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-zinc-500">No leave requests found.</p>
+          <p className="text-sm text-black">No leave requests found.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -90,20 +90,20 @@ export default function WardenLeaveRequestsPage() {
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="text-base font-semibold text-zinc-900">
+                    <p className="text-base font-semibold text-black">
                       {new Date(request.fromDate).toLocaleDateString()} —{" "}
                       {new Date(request.toDate).toLocaleDateString()}
                     </p>
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        STATUS_COLORS[request.status] ?? "bg-zinc-100 text-zinc-600"
+                        STATUS_COLORS[request.status] ?? "bg-zinc-100 text-black"
                       }`}
                     >
                       {request.status}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-zinc-600">{request.reason}</p>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-zinc-500">
+                  <p className="mt-2 text-sm text-black">{request.reason}</p>
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-black">
                     <span>
                       By: {request.student.user.name ?? request.student.user.email}
                     </span>

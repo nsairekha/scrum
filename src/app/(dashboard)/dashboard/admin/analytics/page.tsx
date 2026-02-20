@@ -49,21 +49,21 @@ export default function AdminAnalyticsPage() {
   }
 
   if (!data) {
-    return <p className="text-sm text-zinc-500">Loading analytics...</p>;
+    return <p className="text-sm text-black">Loading analytics...</p>;
   }
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Analytics</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Analytics</h1>
+        <p className="text-sm text-black">
           Overview of hostel operations and trends.
         </p>
       </div>
 
       <section className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-semibold text-black">
             Student count by block
           </h2>
           <div className="mt-4 h-64">
@@ -80,7 +80,7 @@ export default function AdminAnalyticsPage() {
         </div>
 
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-semibold text-black">
             Monthly payments
           </h2>
           <div className="mt-4 h-64">
@@ -103,7 +103,7 @@ export default function AdminAnalyticsPage() {
         </div>
 
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-semibold text-black">
             Complaint status
           </h2>
           <div className="mt-4 h-64">
@@ -129,7 +129,7 @@ export default function AdminAnalyticsPage() {
         </div>
 
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-semibold text-black">
             Leave request trends
           </h2>
           <div className="mt-4 h-64">

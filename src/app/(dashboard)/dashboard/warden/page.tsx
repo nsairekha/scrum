@@ -22,17 +22,22 @@ export default function WardenDashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
-    fetch("/api/warden/stats")
-      .then((res) => res.json())
-      .then((data) => setStats(data.stats))
-      .catch(() => {});
+    (async () => {
+      try {
+        const res = await fetch("/api/warden/stats");
+        const d = await (await import('@/lib/safe-json')).safeJson(res);
+        setStats(d?.stats ?? null);
+      } catch {
+        // ignore
+      }
+    })();
   }, []);
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Warden Dashboard</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Warden Dashboard</h1>
+        <p className="text-sm text-black">
           Manage students, rooms, complaints, and leave requests.
         </p>
       </div>
@@ -40,19 +45,19 @@ export default function WardenDashboardPage() {
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Total Students</p>
-          <p className="mt-2 text-3xl font-bold text-zinc-900">
+          <p className="text-xs font-medium uppercase tracking-wider text-black">Total Students</p>
+          <p className="mt-2 text-3xl font-bold text-black">
             {stats?.students ?? "—"}
           </p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Open Complaints</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-black">Open Complaints</p>
           <p className="mt-2 text-3xl font-bold text-amber-600">
             {stats?.complaints ?? "—"}
           </p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Leave Requests</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-black">Leave Requests</p>
           <p className="mt-2 text-3xl font-bold text-blue-600">
             {stats?.leaves ?? "—"}
           </p>
@@ -68,10 +73,10 @@ export default function WardenDashboardPage() {
             className="group rounded-xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
           >
             <div className="text-2xl">{section.icon}</div>
-            <h2 className="mt-3 text-lg font-semibold text-zinc-900 group-hover:text-zinc-700">
+            <h2 className="mt-3 text-lg font-semibold text-black group-hover:text-black">
               {section.title}
             </h2>
-            <p className="mt-1 text-sm text-zinc-600">{section.description}</p>
+            <p className="mt-1 text-sm text-black">{section.description}</p>
           </Link>
         ))}
       </div>

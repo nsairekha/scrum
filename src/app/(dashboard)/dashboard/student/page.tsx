@@ -13,8 +13,8 @@ export default function StudentDashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Student Dashboard</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-black">Student Dashboard</h1>
+        <p className="text-sm text-black">
           Manage your profile, room, requests, and payments.
         </p>
       </div>
@@ -25,10 +25,10 @@ export default function StudentDashboardPage() {
             href={section.href}
             className="rounded-xl border border-zinc-200 bg-white p-4 transition hover:border-zinc-300"
           >
-            <h2 className="text-lg font-semibold text-zinc-900">
+            <h2 className="text-lg font-semibold text-black">
               {section.title}
             </h2>
-            <p className="mt-1 text-sm text-zinc-600">{section.description}</p>
+            <p className="mt-1 text-sm text-black">{section.description}</p>
           </Link>
         ))}
       </div>

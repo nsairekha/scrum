@@ -22,7 +22,12 @@ export default function StudentProfilePage() {
         setError("Unable to load profile");
         return;
       }
-      const payload = (await response.json()) as ProfileResponse;
+      const { safeJson } = await import("@/lib/safe-json");
+      const payload = (await safeJson(response)) as ProfileResponse | null;
+      if (!payload) {
+        setError("Unable to parse profile");
+        return;
+      }
       setData(payload);
     };
 
@@ -34,38 +39,38 @@ export default function StudentProfilePage() {
   }
 
   if (!data) {
-    return <p className="text-sm text-zinc-500">Loading profile...</p>;
+    return <p className="text-sm text-black">Loading profile...</p>;
   }
 
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">My Profile</h1>
-        <p className="text-sm text-zinc-600">Basic student information.</p>
+        <h1 className="text-2xl font-semibold text-black">My Profile</h1>
+        <p className="text-sm text-black">Basic student information.</p>
       </div>
       <div className="rounded-xl border border-zinc-200 bg-white p-6">
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Name</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Name</dt>
+            <dd className="text-sm font-medium text-black">
               {data.student.user.name ?? "Not set"}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Email</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Email</dt>
+            <dd className="text-sm font-medium text-black">
               {data.student.user.email}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Roll No</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Roll No</dt>
+            <dd className="text-sm font-medium text-black">
               {data.student.rollNo}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-zinc-500">Parent Contact</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-xs uppercase text-black">Parent Contact</dt>
+            <dd className="text-sm font-medium text-black">
               {data.student.parentContact}
             </dd>
           </div>
