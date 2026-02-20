@@ -58,6 +58,7 @@ model Student {
   user          User     @relation(fields: [userId], references: [id])
   room          Room?    @relation(fields: [roomId], references: [id])
   complaints    Complaint[]
+  attendance    Attendance[]
   leaveRequests LeaveRequest[]
   payments      Payment[]
 }
@@ -102,6 +103,15 @@ model Complaint {
   createdAt   DateTime        @default(now())
 
   student     Student         @relation(fields: [studentId], references: [id])
+}
+
+model Attendance {
+  id         String   @id @default(cuid())
+  studentId  String
+  date       DateTime @default(now())
+  present    Boolean  @default(false)
+
+  student    Student  @relation(fields: [studentId], references: [id])
 }
 
 model LeaveRequest {

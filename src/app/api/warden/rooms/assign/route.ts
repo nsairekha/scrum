@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   }
 
   const block = context.warden?.block ?? null;
-  if (block && room.block !== block) {
+  if (block && room.blockId !== block.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

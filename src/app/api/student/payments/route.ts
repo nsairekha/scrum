@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getStudentContext } from "@/lib/student-auth";
 
@@ -35,7 +34,7 @@ export async function POST(request: Request) {
   const payment = await prisma.payment.create({
     data: {
       studentId: context.student.id,
-      amount: new Prisma.Decimal(body.amount),
+      amount: body.amount,
       status: "PAID",
     },
   });

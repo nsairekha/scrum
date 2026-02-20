@@ -14,6 +14,8 @@ export default function WardenStudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", rollNo: "", parentContact: "", roomId: "" });
 
   useEffect(() => {
     fetch("/api/warden/students")
@@ -33,6 +35,40 @@ export default function WardenStudentsPage() {
         <p className="text-sm text-zinc-600">
           All hostel residents and their room assignments.
         </p>
+      </div>
+
+      {/* Add Student Form */}
+      <div className="rounded-xl border border-zinc-200 bg-white p-4">
+        <h2 className="text-sm font-medium text-zinc-800">Add Student</h2>
+        <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-4">
+          <input className="rounded-md border p-2" placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <input className="rounded-md border p-2" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <input className="rounded-md border p-2" placeholder="Roll No" value={form.rollNo} onChange={(e) => setForm({ ...form, rollNo: e.target.value })} />
+          <input className="rounded-md border p-2" placeholder="Parent Contact" value={form.parentContact} onChange={(e) => setForm({ ...form, parentContact: e.target.value })} />
+        </div>
+        <div className="mt-3 flex items-center gap-2">
+          <button
+            disabled={adding}
+            onClick={async () => {
+              setAdding(true);
+              setError(null);
+              try {
+                const res = await fetch('/api/warden/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+                if (!res.ok) throw new Error('Failed to add student');
+                const data = await res.json();
+                setStudents((s) => [data.student, ...s]);
+                setForm({ name: '', email: '', rollNo: '', parentContact: '', roomId: '' });
+              } catch (err: unknown) {
+                setError(err instanceof Error ? err.message : 'Error');
+              } finally {
+                setAdding(false);
+              }
+            }}
+            className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+          >
+            {adding ? 'Adding...' : 'Add Student'}
+          </button>
+        </div>
       </div>
 
       {loading ? (

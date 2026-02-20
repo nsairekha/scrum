@@ -1,6 +1,10 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
+const _nodemailer = nodemailer as unknown as {
+  createTransport: (opts: unknown) => unknown;
+};
+
+const transporter = _nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT) || 587,
   secure: process.env.SMTP_SECURE === "true",
@@ -23,7 +27,8 @@ export async function sendEmail(payload: EmailPayload): Promise<boolean> {
       return false;
     }
 
-    await transporter.sendMail({
+    const t = transporter as unknown as { sendMail: (opts: unknown) => Promise<unknown> };
+    await t.sendMail({
       from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
       to: payload.to,
       subject: payload.subject,

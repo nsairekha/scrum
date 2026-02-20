@@ -15,6 +15,7 @@ const SECTIONS = [
   { title: "Complaints", href: "/dashboard/warden/complaints", description: "Review and resolve student complaints.", icon: "📋" },
   { title: "Leave Requests", href: "/dashboard/warden/leave-requests", description: "Approve or reject leave applications.", icon: "📅" },
   { title: "Announcements", href: "/dashboard/warden/announcements", description: "Post notices for hostel residents.", icon: "📢" },
+  { title: "Attendance", href: "/dashboard/warden/attendance", description: "Mark daily attendance for students.", icon: "📝" },
 ];
 
 export default function WardenDashboardPage() {
