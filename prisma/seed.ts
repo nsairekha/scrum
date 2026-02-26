@@ -77,6 +77,23 @@ async function main() {
   });
   console.log("✅ Student created:", studentUser.email);
 
+  // Create rooms for Block A
+  console.log("🏢 Creating residential units for Block A...");
+  for (let i = 1; i <= 10; i++) {
+    const roomNumber = `A-${i.toString().padStart(3, '0')}`;
+    await prisma.room.upsert({
+      where: { blockId_roomNumber: { blockId: block.id, roomNumber } },
+      update: {},
+      create: {
+        roomNumber,
+        capacity: 4,
+        occupied: 0,
+        blockId: block.id,
+      },
+    });
+  }
+  console.log("✅ 10 rooms created for Block A");
+
   console.log("\n🎉 Seeding complete!\n");
   console.log("📋 Default Credentials:");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");

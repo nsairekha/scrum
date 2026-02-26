@@ -7,6 +7,99 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  passwordHash  String
+  role          Role           @default("STUDENT")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  announcements Announcement[] @relation("AnnouncementCreator")
+  student       Student?
+  warden        Warden?
+}
+
+model Student {
+  id            String         @id @default(cuid())
+  userId        String         @unique
+  rollNo        String         @unique
+  parentContact String
+  roomId        String?
+  complaints    Complaint[]
+  leaveRequests LeaveRequest[]
+  payments      Payment[]
+  room          Room?          @relation(fields: [roomId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
+}
+
+model Warden {
+  id      String @id @default(cuid())
+  userId  String @unique
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model Room {
+  id         String    @id @default(cuid())
+  roomNumber String
+  capacity   Int
+  occupied   Int
+  blockId    String
+  block      Block     @relation(fields: [blockId], references: [id])
+  students   Student[]
+
+  @@unique([blockId, roomNumber])
+}
+
+model Block {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  rooms     Room[]
+  wardens   Warden[]
+}
+
+model Complaint {
+  id          String          @id @default(cuid())
+  studentId   String
+  title       String
+  description String
+  status      ComplaintStatus @default("OPEN")
+  createdAt   DateTime        @default(now())
+  student     Student         @relation(fields: [studentId], references: [id])
+}
+
+model LeaveRequest {
+  id        String      @id @default(cuid())
+  studentId String
+  fromDate  DateTime
+  toDate    DateTime
+  reason    String
+  status    LeaveStatus @default("PENDING")
+  createdAt DateTime    @default(now())
+  student   Student     @relation(fields: [studentId], references: [id])
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  studentId   String
+  amount      Float
+  paymentDate DateTime      @default(now())
+  status      PaymentStatus @default("PENDING")
+  student     Student       @relation(fields: [studentId], references: [id])
+}
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  message     String
+  createdById String
+  createdAt   DateTime @default(now())
+  createdBy   User     @relation("AnnouncementCreator", fields: [createdById], references: [id])
+}
+
 enum Role {
   STUDENT
   WARDEN
@@ -32,116 +125,4 @@ enum PaymentStatus {
   PAID
   FAILED
   REFUNDED
-}
-
-model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String?
-  passwordHash String
-  role         Role     @default(STUDENT)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  student      Student?
-  warden       Warden?
-  announcements Announcement[] @relation("AnnouncementCreator")
-}
-
-model Student {
-  id            String   @id @default(cuid())
-  userId        String   @unique
-  rollNo        String   @unique
-  parentContact String
-  roomId        String?
-
-  user          User     @relation(fields: [userId], references: [id])
-  room          Room?    @relation(fields: [roomId], references: [id])
-  complaints    Complaint[]
-  attendance    Attendance[]
-  leaveRequests LeaveRequest[]
-  payments      Payment[]
-}
-
-model Warden {
-  id     String @id @default(cuid())
-  userId String @unique
-  blockId String
-
-  user   User   @relation(fields: [userId], references: [id])
-  block  Block  @relation(fields: [blockId], references: [id])
-}
-
-model Room {
-  id         String    @id @default(cuid())
-  roomNumber String
-  capacity   Int
-  occupied   Int
-  blockId    String
-
-  block      Block     @relation(fields: [blockId], references: [id])
-  students   Student[]
-
-  @@unique([blockId, roomNumber])
-}
-
-model Block {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-
-  rooms     Room[]
-  wardens   Warden[]
-}
-
-model Complaint {
-  id          String          @id @default(cuid())
-  studentId   String
-  title       String
-  description String
-  status      ComplaintStatus @default(OPEN)
-  createdAt   DateTime        @default(now())
-
-  student     Student         @relation(fields: [studentId], references: [id])
-}
-
-model Attendance {
-  id         String   @id @default(cuid())
-  studentId  String
-  date       DateTime @default(now())
-  present    Boolean  @default(false)
-
-  student    Student  @relation(fields: [studentId], references: [id])
-}
-
-model LeaveRequest {
-  id        String      @id @default(cuid())
-  studentId String
-  fromDate  DateTime
-  toDate    DateTime
-  reason    String
-  status    LeaveStatus @default(PENDING)
-  createdAt DateTime    @default(now())
-
-  student   Student     @relation(fields: [studentId], references: [id])
-}
-
-model Payment {
-  id          String        @id @default(cuid())
-  studentId   String
-  amount      Float
-  paymentDate DateTime      @default(now())
-  status      PaymentStatus @default(PENDING)
-
-  student     Student       @relation(fields: [studentId], references: [id])
-}
-
-model Announcement {
-  id          String   @id @default(cuid())
-  title       String
-  message     String
-  createdById String
-  createdAt   DateTime @default(now())
-
-  createdBy   User     @relation("AnnouncementCreator", fields: [createdById], references: [id])
 }
