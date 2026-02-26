@@ -46,50 +46,63 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="email">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black outline-none focus:border-zinc-400"
-          placeholder="student@hostel.local"
-        />
+    <form onSubmit={handleSubmit} className="space-y-10">
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted block" htmlFor="email">
+            Identification / Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="input-bespoke"
+            placeholder="institution@local"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted block" htmlFor="password">
+            Security Key / Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="input-bespoke"
+            placeholder="••••••••"
+          />
+        </div>
       </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="password">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black outline-none focus:border-zinc-400"
-          placeholder="Minimum 8 characters"
-        />
-      </div>
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="flex h-11 w-full items-center justify-center rounded-md bg-zinc-900 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:bg-zinc-500"
-      >
-        {isSubmitting ? "Signing in..." : "Sign in"}
-      </button>
-      <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-black hover:underline">
-          Sign up
-        </Link>
+
+      {error ? (
+        <div className="p-3 border border-red-200 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+          {error}
+        </div>
+      ) : null}
+
+      <div className="space-y-6">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn-bespoke w-full py-4 text-xs uppercase tracking-[0.2em] shadow-sm active:translate-y-0.5"
+        >
+          {isSubmitting ? "Processing..." : "Grant Access"}
+        </button>
+        
+        <div className="text-center">
+          <span className="text-xs text-muted uppercase tracking-widest">
+            New Account?{" "}
+            <Link href="/signup" className="font-bold text-primary hover:text-accent transition-colors underline underline-offset-4 decoration-primary/20 hover:decoration-primary">
+              Register
+            </Link>
+          </span>
+        </div>
       </div>
     </form>
   );
