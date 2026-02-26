@@ -33,32 +33,34 @@ export default function StudentAnnouncementsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Announcements</h1>
-        <p className="text-sm text-black">Latest hostel updates.</p>
+        <h1 className="text-3xl font-bold text-foreground">Announcements</h1>
+        <p className="mt-1 text-sm text-muted">Latest institutional updates and circulars.</p>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {announcements.length === 0 ? (
-          <p className="text-sm text-black">No announcements yet.</p>
+          <p className="text-sm text-muted">No institutional announcements found.</p>
         ) : (
-          announcements.map((announcement) => (
-            <div
-              key={announcement.id}
-              className="rounded-xl border border-zinc-200 bg-white p-4"
-            >
-              <h2 className="text-sm font-semibold text-black">
-                {announcement.title}
-              </h2>
-              <p className="mt-2 text-sm text-black">
-                {announcement.message}
-              </p>
-              <p className="mt-3 text-xs text-black">
-                {announcement.createdBy.name ?? announcement.createdBy.email} ·{" "}
-                {new Date(announcement.createdAt).toLocaleString()}
-              </p>
-            </div>
-          ))
+          <div className="grid gap-4">
+            {announcements.map((announcement) => (
+              <div
+                key={announcement.id}
+                className="rounded-xl border border-border bg-surface p-6 shadow-sm group hover:border-primary/30 transition-colors"
+              >
+                <h2 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                  {announcement.title}
+                </h2>
+                <p className="mt-3 text-sm text-muted leading-relaxed">
+                  {announcement.message}
+                </p>
+                <div className="mt-6 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted/60">
+                  <span>Issued By: {announcement.createdBy.name ?? announcement.createdBy.email}</span>
+                  <span>{new Date(announcement.createdAt).toLocaleDateString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

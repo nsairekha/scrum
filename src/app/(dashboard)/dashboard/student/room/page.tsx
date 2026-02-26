@@ -35,48 +35,50 @@ export default function StudentRoomPage() {
   }
 
   if (!data) {
-    return <p className="text-sm text-black">Loading room details...</p>;
+    return <p className="text-sm text-muted">Syncing room allocation...</p>;
   }
 
   if (!data.room) {
     return (
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold text-black">My Room</h1>
-        <p className="text-sm text-black">No room assigned yet.</p>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">My Room</h1>
+          <p className="mt-1 text-sm text-muted">No institutional room has been assigned to your profile yet.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-black">My Room</h1>
-        <p className="text-sm text-black">Current room allocation.</p>
+        <h1 className="text-3xl font-bold text-foreground">My Room</h1>
+        <p className="mt-1 text-sm text-muted">Current residential allocation and block details.</p>
       </div>
-      <div className="rounded-xl border border-zinc-200 bg-white p-6">
-        <dl className="grid gap-4 sm:grid-cols-2">
+      <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <dl className="grid gap-6 sm:grid-cols-2">
           <div>
-            <dt className="text-xs uppercase text-black">Block</dt>
-            <dd className="text-sm font-medium text-black">
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Residential Block</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
               {data.room.block}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-black">Room Number</dt>
-            <dd className="text-sm font-medium text-black">
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Room Number</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
               {data.room.roomNumber}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-black">Capacity</dt>
-            <dd className="text-sm font-medium text-black">
-              {data.room.capacity}
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Total Capacity</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
+              {data.room.capacity} beds
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-black">Occupied</dt>
-            <dd className="text-sm font-medium text-black">
-              {data.room.occupied}
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Current Occupancy</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
+              {data.room.occupied} residents
             </dd>
           </div>
         </dl>

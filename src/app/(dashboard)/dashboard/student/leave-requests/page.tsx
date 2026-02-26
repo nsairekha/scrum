@@ -61,21 +61,21 @@ export default function StudentLeaveRequestsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Leave Requests</h1>
-        <p className="text-sm text-black">
-          Apply for leave and view approval status.
+        <h1 className="text-3xl font-bold text-foreground">Leave Requests</h1>
+        <p className="mt-1 text-sm text-muted">
+          Formal institutional absence authorization system.
         </p>
       </div>
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6"
+        className="space-y-6 rounded-xl border border-border bg-surface p-6 shadow-sm"
       >
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="fromDate">
-              From
+            <label className="text-sm font-medium text-foreground/70" htmlFor="fromDate">
+              Start Date
             </label>
             <input
               id="fromDate"
@@ -83,12 +83,12 @@ export default function StudentLeaveRequestsPage() {
               value={fromDate}
               onChange={(event) => setFromDate(event.target.value)}
               required
-              className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
+              className="input-bespoke"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="toDate">
-              To
+            <label className="text-sm font-medium text-foreground/70" htmlFor="toDate">
+              End Date
             </label>
             <input
               id="toDate"
@@ -96,13 +96,13 @@ export default function StudentLeaveRequestsPage() {
               value={toDate}
               onChange={(event) => setToDate(event.target.value)}
               required
-              className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
+              className="input-bespoke"
             />
           </div>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="reason">
-            Reason
+          <label className="text-sm font-medium text-foreground/70" htmlFor="reason">
+            Authorization Reason
           </label>
           <textarea
             id="reason"
@@ -110,39 +110,49 @@ export default function StudentLeaveRequestsPage() {
             onChange={(event) => setReason(event.target.value)}
             required
             rows={3}
-            className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-black placeholder:text-black"
+            className="input-bespoke min-h-[100px] resize-none"
+            placeholder="Provide specific justification for leave..."
           />
         </div>
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {error ? <p className="text-sm text-red-600 font-medium">{error}</p> : null}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex h-11 items-center justify-center rounded-md bg-zinc-900 px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
+          className="btn-bespoke px-8 py-3 text-sm font-semibold shadow-sm active:translate-y-0.5"
         >
-          {isSubmitting ? "Submitting..." : "Apply for leave"}
+          {isSubmitting ? "Processing..." : "Submit Authorization Request"}
         </button>
       </form>
-      <div className="space-y-3">
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">Request History</h2>
         {requests.length === 0 ? (
-          <p className="text-sm text-black">No leave requests yet.</p>
+          <p className="text-sm text-muted">No historical leave authorizations found.</p>
         ) : (
-          requests.map((request) => (
-            <div
-              key={request.id}
-              className="rounded-xl border border-zinc-200 bg-white p-4"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-black">
-                  {new Date(request.fromDate).toLocaleDateString()} -{" "}
-                  {new Date(request.toDate).toLocaleDateString()}
+          <div className="space-y-3">
+            {requests.map((request) => (
+              <div
+                key={request.id}
+                className="rounded-xl border border-border bg-surface p-6 shadow-sm group hover:border-primary/30 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-bold text-foreground">
+                    {new Date(request.fromDate).toLocaleDateString()} — {new Date(request.toDate).toLocaleDateString()}
+                  </p>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary px-2 py-1 bg-primary/5 rounded">
+                    {request.status.replaceAll("_", " ")}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm text-muted leading-relaxed">
+                  {request.reason}
                 </p>
-                <span className="text-xs uppercase text-black">
-                  {request.status.replaceAll("_", " ")}
-                </span>
+                <div className="mt-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted/60">
+                  <span>Record ID: {request.id.slice(0, 8)}</span>
+                  <span>Submitted {new Date(request.createdAt).toLocaleDateString()}</span>
+                </div>
               </div>
-              <p className="mt-2 text-sm text-black">{request.reason}</p>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -66,81 +66,90 @@ export default function WardenComplaintsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Complaints</h1>
-        <p className="text-sm text-black">
-          Review student complaints and update their status.
+        <h1 className="text-3xl font-bold text-foreground">Grievances</h1>
+        <p className="mt-1 text-sm text-muted">
+          Institutional review and resolution system for resident concerns.
         </p>
       </div>
 
       {loading ? (
-        <p className="text-sm text-black">Loading complaints...</p>
+        <p className="text-sm text-muted">Syncing grievance records...</p>
       ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-red-600 font-medium">{error}</p>
       ) : complaints.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-black">No complaints found.</p>
+        <div className="rounded-xl border border-border bg-surface p-12 text-center">
+          <p className="text-sm text-muted">No active residential grievances found.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {complaints.map((complaint) => (
             <div
               key={complaint.id}
-              className="rounded-xl border border-zinc-200 bg-white p-5"
+              className="rounded-xl border border-border bg-surface p-6 shadow-sm group hover:border-primary/30 transition-colors"
             >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                 <div className="flex-1">
-                  <h2 className="text-base font-semibold text-black">
+                  <h2 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
                     {complaint.title}
                   </h2>
-                  <p className="mt-1 text-sm text-black">
+                  <p className="mt-3 text-sm text-muted leading-relaxed">
                     {complaint.description}
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-black">
-                    <span>
-                      By: {complaint.student.user.name ?? complaint.student.user.email}
+                  <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-bold uppercase tracking-widest text-muted/60">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                      {complaint.student.user.name ?? complaint.student.user.email}
                     </span>
                     <span>•</span>
                     <span>Roll: {complaint.student.rollNo}</span>
                     {complaint.student.room && (
                       <>
                         <span>•</span>
-                        <span>Room {complaint.student.room.roomNumber}</span>
+                        <span>Unit {complaint.student.room.roomNumber}</span>
                       </>
                     )}
                     <span>•</span>
-                    <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                    <span>Logged {new Date(complaint.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-4">
                   <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      STATUS_COLORS[complaint.status] ?? "bg-zinc-100 text-black"
+                    className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                      complaint.status === 'RESOLVED' ? 'bg-primary/10 text-primary' :
+                      complaint.status === 'IN_PROGRESS' ? 'bg-blue-500/10 text-blue-700' :
+                      complaint.status === 'OPEN' ? 'bg-amber-500/10 text-amber-700' :
+                      'bg-muted/10 text-muted'
                     }`}
                   >
                     {complaint.status.replaceAll("_", " ")}
                   </span>
-                  <button
-                    onClick={() => handleStatusChange(complaint.id, 'RESOLVED')}
-                    className="rounded-md bg-green-600 px-2 py-1 text-xs text-white"
-                  >
-                    Mark Resolved
-                  </button>
-                  <select
-                    value={complaint.status}
-                    onChange={(e) =>
-                      handleStatusChange(complaint.id, e.target.value)
-                    }
-                    disabled={updating === complaint.id}
-                    className="rounded-md border border-zinc-200 bg-white px-2 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {STATUS_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s.replaceAll("_", " ")}
-                      </option>
-                    ))}
-                  </select>
+                  
+                  <div className="flex items-center gap-2">
+                    {complaint.status !== 'RESOLVED' && (
+                      <button
+                        onClick={() => handleStatusChange(complaint.id, 'RESOLVED')}
+                        className="btn-bespoke px-3 py-1.5 text-[10px] font-bold uppercase"
+                      >
+                        Resolve
+                      </button>
+                    )}
+                    <select
+                      value={complaint.status}
+                      onChange={(e) =>
+                        handleStatusChange(complaint.id, e.target.value)
+                      }
+                      disabled={updating === complaint.id}
+                      className="input-bespoke h-8 min-w-[120px] px-2 py-0 text-[10px] font-bold uppercase tracking-wider"
+                    >
+                      {STATUS_OPTIONS.map((s) => (
+                        <option key={s} value={s}>
+                          {s.replaceAll("_", " ")}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>

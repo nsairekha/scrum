@@ -67,87 +67,94 @@ export default function WardenAnnouncementsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Announcements</h1>
-        <p className="text-sm text-black">
-          Post notices for hostel residents and view past announcements.
+        <h1 className="text-3xl font-bold text-foreground">Institutional Announcements</h1>
+        <p className="mt-1 text-sm text-muted">
+          Broadcast institutional circulars and monitor residential communications.
         </p>
       </div>
 
       {/* Create Announcement Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6"
+        className="space-y-6 rounded-xl border border-border bg-surface p-6 shadow-sm"
       >
-        <h2 className="text-lg font-semibold text-black">New Announcement</h2>
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-black" htmlFor="ann-title">
-            Title
-          </label>
-          <input
-            id="ann-title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
-            placeholder="Hostel Maintenance Notice"
-          />
+        <h2 className="text-sm font-bold uppercase tracking-widest text-muted">Broadcast New Circular</h2>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-foreground/70" htmlFor="ann-title">
+              Broadcast Title
+            </label>
+            <input
+              id="ann-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              className="input-bespoke"
+              placeholder="e.g. Annual Maintenance Schedule"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-foreground/70" htmlFor="ann-message">
+              Broadcast Content
+            </label>
+            <textarea
+              id="ann-message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+              rows={4}
+              className="input-bespoke min-h-[120px] resize-none"
+              placeholder="Provide specific details for the announcement..."
+            />
+          </div>
         </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-black" htmlFor="ann-message">
-            Message
-          </label>
-          <textarea
-            id="ann-message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-            rows={4}
-            className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-black placeholder:text-black"
-            placeholder="Write your announcement here..."
-          />
+        {submitError && <p className="text-sm text-red-600 font-medium">{submitError}</p>}
+        {submitSuccess && <p className="text-sm text-primary font-medium">{submitSuccess}</p>}
+        <div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn-bespoke px-8 py-3 text-sm font-semibold shadow-sm active:translate-y-0.5"
+          >
+            {isSubmitting ? "Broadcasting..." : "Broadcast Circular"}
+          </button>
         </div>
-        {submitError && <p className="text-sm text-red-600">{submitError}</p>}
-        {submitSuccess && <p className="text-sm text-green-600">{submitSuccess}</p>}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="inline-flex h-11 items-center justify-center rounded-md bg-zinc-900 px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
-        >
-          {isSubmitting ? "Posting..." : "Post Announcement"}
-        </button>
       </form>
 
       {/* Announcements List */}
-      {loading ? (
-        <p className="text-sm text-black">Loading announcements...</p>
-      ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
-      ) : announcements.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-black">No announcements yet.</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {announcements.map((ann) => (
-            <div
-              key={ann.id}
-              className="rounded-xl border border-zinc-200 bg-white p-5"
-            >
-              <h2 className="text-base font-semibold text-black">{ann.title}</h2>
-              <p className="mt-2 text-sm text-black">{ann.message}</p>
-              <div className="mt-3 flex gap-2 text-xs text-black">
-                <span>
-                  By: {ann.createdBy.name ?? ann.createdBy.email}
-                </span>
-                <span>•</span>
-                <span>{new Date(ann.createdAt).toLocaleDateString()}</span>
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">Communication Log</h2>
+        {loading ? (
+          <p className="text-sm text-muted">Syncing broadcast logs...</p>
+        ) : error ? (
+          <p className="text-sm text-red-600 font-medium">{error}</p>
+        ) : announcements.length === 0 ? (
+          <div className="rounded-xl border border-border bg-surface p-12 text-center">
+            <p className="text-sm text-muted">No historical broadcasts found.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {announcements.map((ann) => (
+              <div
+                key={ann.id}
+                className="rounded-xl border border-border bg-surface p-6 shadow-sm group hover:border-primary/30 transition-colors"
+              >
+                <h2 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{ann.title}</h2>
+                <p className="mt-3 text-sm text-muted leading-relaxed">{ann.message}</p>
+                <div className="mt-6 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted/60">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                    Issued By: {ann.createdBy.name ?? ann.createdBy.email}
+                  </span>
+                  <span>{new Date(ann.createdAt).toLocaleDateString()}</span>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

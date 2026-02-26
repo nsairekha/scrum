@@ -36,26 +36,38 @@ export default function WardenStudentsPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Students</h1>
-        <p className="text-sm text-black">
-          All hostel residents and their room assignments.
+        <h1 className="text-3xl font-bold text-foreground">Residents</h1>
+        <p className="mt-1 text-sm text-muted">
+          Comprehensive registry of institutional residents and residential allocations.
         </p>
       </div>
 
       {/* Add Student Form */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-4">
-        <h2 className="text-sm font-medium text-black">Add Student</h2>
-        <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-4">
-          <input aria-label="Name" className="rounded-md border p-2 text-black placeholder:text-black" placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-          <input aria-label="Email" className="rounded-md border p-2 text-black placeholder:text-black" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-          <input aria-label="Roll No" className="rounded-md border p-2 text-black placeholder:text-black" placeholder="Roll No" value={form.rollNo} onChange={(e) => setForm({ ...form, rollNo: e.target.value })} />
-          <input aria-label="Parent Contact" className="rounded-md border p-2 text-black placeholder:text-black" placeholder="Parent Contact" value={form.parentContact} onChange={(e) => setForm({ ...form, parentContact: e.target.value })} />
+      <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-muted">Register New Resident</h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-foreground/70" htmlFor="name">Full Name</label>
+            <input id="name" aria-label="Name" className="input-bespoke" placeholder="e.g. John Doe" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-foreground/70" htmlFor="email">Email Address</label>
+            <input id="email" aria-label="Email" className="input-bespoke" placeholder="e.g. john@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-foreground/70" htmlFor="rollNo">Roll Number</label>
+            <input id="rollNo" aria-label="Roll No" className="input-bespoke" placeholder="e.g. CS2024001" value={form.rollNo} onChange={(e) => setForm({ ...form, rollNo: e.target.value })} />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-foreground/70" htmlFor="parentContact">Emergency Contact</label>
+            <input id="parentContact" aria-label="Parent Contact" className="input-bespoke" placeholder="e.g. +91 9876543210" value={form.parentContact} onChange={(e) => setForm({ ...form, parentContact: e.target.value })} />
+          </div>
         </div>
-        {formError && <p className="text-sm text-red-600 mt-2">{formError}</p>}
-        {successMessage && <p className="text-sm text-green-600 mt-2">{successMessage}</p>}
-        <div className="mt-3 flex items-center gap-2">
+        {formError && <p className="text-sm text-red-600 mt-4 font-medium">{formError}</p>}
+        {successMessage && <p className="text-sm text-primary mt-4 font-medium">{successMessage}</p>}
+        <div className="mt-8">
           <button
             disabled={adding}
             onClick={async () => {
@@ -86,68 +98,73 @@ export default function WardenStudentsPage() {
                 }
                 setStudents((s) => [data.student, ...s]);
                 setForm({ name: '', email: '', rollNo: '', parentContact: '', roomId: '' });
-                setSuccessMessage('Student added');
+                setSuccessMessage('Resident successfully registered');
               } catch (err: unknown) {
-                setFormError(err instanceof Error ? err.message : 'Error');
+                setFormError(err instanceof Error ? err.message : 'Registry error');
               } finally {
                 setAdding(false);
               }
             }}
-            className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+            className="btn-bespoke px-8 py-2.5 text-sm font-semibold shadow-sm active:translate-y-0.5"
           >
-            {adding ? 'Adding...' : 'Add Student'}
+            {adding ? 'Processing Registry...' : 'Register resident'}
           </button>
         </div>
       </div>
 
-      {loading ? (
-        <p className="text-sm text-black">Loading students...</p>
-      ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
-      ) : students.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-black">No students found.</p>
-        </div>
-      ) : (
-        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-zinc-200 bg-zinc-50">
-              <tr>
-                <th className="px-4 py-3 font-medium text-black">Name</th>
-                <th className="px-4 py-3 font-medium text-black">Email</th>
-                <th className="px-4 py-3 font-medium text-black">Roll No</th>
-                <th className="px-4 py-3 font-medium text-black">Room</th>
-                <th className="px-4 py-3 font-medium text-black">Parent Contact</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100">
-              {students.map((student) => (
-                <tr key={student.id} className="hover:bg-zinc-50">
-                  <td className="px-4 py-3 font-medium text-black">
-                    {student.user.name ?? "—"}
-                  </td>
-                  <td className="px-4 py-3 text-black">{student.user.email}</td>
-                  <td className="px-4 py-3 text-black">{student.rollNo}</td>
-                  <td className="px-4 py-3">
-                    {student.room ? (
-                      <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        Room {student.room.roomNumber}
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-black">
-                        Unassigned
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-black">
-                    {student.parentContact || "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">Resident Registry</h2>
+        {loading ? (
+          <p className="text-sm text-muted">Syncing registry data...</p>
+        ) : error ? (
+          <p className="text-sm text-red-600 font-medium">{error}</p>
+        ) : students.length === 0 ? (
+          <div className="rounded-xl border border-border bg-surface p-12 text-center">
+            <p className="text-sm text-muted">No institutional residents found in the registry.</p>
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-border bg-background/50 text-[10px] font-bold uppercase tracking-widest text-muted">
+                  <tr>
+                    <th className="px-6 py-4">Legal Name</th>
+                    <th className="px-6 py-4">Institutional Email</th>
+                    <th className="px-6 py-4">Roll Identifier</th>
+                    <th className="px-6 py-4">Residential Allocation</th>
+                    <th className="px-6 py-4">Parental Reach</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/50">
+                  {students.map((student) => (
+                    <tr key={student.id} className="hover:bg-background/40 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-foreground">
+                        {student.user.name ?? "—"}
+                      </td>
+                      <td className="px-6 py-4 text-muted">{student.user.email}</td>
+                      <td className="px-6 py-4 text-muted">{student.rollNo}</td>
+                      <td className="px-6 py-4">
+                        {student.room ? (
+                          <span className="inline-flex items-center rounded bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                            Room {student.room.roomNumber}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded bg-muted/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-muted">
+                            Unassigned
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-muted">
+                        {student.parentContact || "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

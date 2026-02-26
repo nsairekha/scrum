@@ -34,49 +34,56 @@ export default function WardenDashboardPage() {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Warden Dashboard</h1>
-        <p className="text-sm text-black">
-          Manage students, rooms, complaints, and leave requests.
+        <h1 className="text-3xl font-bold text-foreground">Warden Dashboard</h1>
+        <p className="mt-2 text-sm text-muted">
+          Institutional oversight across residents, infrastructure, and administrative requests.
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-black">Total Students</p>
-          <p className="mt-2 text-3xl font-bold text-black">
+      <div className="grid gap-6 md:grid-cols-3">
+        <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Total Residents</p>
+          <p className="mt-3 text-3xl font-bold text-foreground">
             {stats?.students ?? "—"}
           </p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-black">Open Complaints</p>
-          <p className="mt-2 text-3xl font-bold text-amber-600">
+        <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Pending Grievances</p>
+          <p className="mt-3 text-3xl font-bold text-amber-600">
             {stats?.complaints ?? "—"}
           </p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-black">Leave Requests</p>
-          <p className="mt-2 text-3xl font-bold text-blue-600">
+        <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Leave Authorizations</p>
+          <p className="mt-3 text-3xl font-bold text-primary">
             {stats?.leaves ?? "—"}
           </p>
         </div>
       </div>
 
       {/* Quick Links */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {SECTIONS.map((section) => (
           <Link
             key={section.title}
             href={section.href}
-            className="group rounded-xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-surface p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md active:scale-[0.98]"
           >
-            <div className="text-2xl">{section.icon}</div>
-            <h2 className="mt-3 text-lg font-semibold text-black group-hover:text-black">
-              {section.title}
-            </h2>
-            <p className="mt-1 text-sm text-black">{section.description}</p>
+            <div>
+              <div className="text-3xl transition-transform group-hover:scale-110 group-hover:rotate-3">{section.icon}</div>
+              <h2 className="mt-4 text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                {section.title}
+              </h2>
+              <p className="mt-2 text-sm text-muted leading-relaxed">
+                {section.description}
+              </p>
+            </div>
+            <div className="mt-6 flex items-center text-[10px] font-bold uppercase tracking-widest text-primary/0 group-hover:text-primary transition-all">
+              Manage Module <span className="ml-2">→</span>
+            </div>
           </Link>
         ))}
       </div>

@@ -64,61 +64,62 @@ export default function WardenLeaveRequestsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Leave Requests</h1>
-        <p className="text-sm text-black">
-          Review and approve or reject student leave applications.
+        <h1 className="text-3xl font-bold text-foreground">Absence Authorizations</h1>
+        <p className="mt-1 text-sm text-muted">
+          Institutional review and oversight for residential absence requests.
         </p>
       </div>
 
       {loading ? (
-        <p className="text-sm text-black">Loading leave requests...</p>
+        <p className="text-sm text-muted">Syncing authorization records...</p>
       ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-red-600 font-medium">{error}</p>
       ) : requests.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-black">No leave requests found.</p>
+        <div className="rounded-xl border border-border bg-surface p-12 text-center">
+          <p className="text-sm text-muted">No pending absence authorizations found.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {requests.map((request) => (
             <div
               key={request.id}
-              className="rounded-xl border border-zinc-200 bg-white p-5"
+              className="rounded-xl border border-border bg-surface p-6 shadow-sm group hover:border-primary/30 transition-colors"
             >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="text-base font-semibold text-black">
-                      {new Date(request.fromDate).toLocaleDateString()} —{" "}
-                      {new Date(request.toDate).toLocaleDateString()}
+                  <div className="flex items-center gap-3">
+                    <p className="text-lg font-bold text-foreground">
+                      {new Date(request.fromDate).toLocaleDateString()} — {new Date(request.toDate).toLocaleDateString()}
                     </p>
                     <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        STATUS_COLORS[request.status] ?? "bg-zinc-100 text-black"
+                      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                        request.status === 'APPROVED' ? 'bg-primary/10 text-primary' :
+                        request.status === 'REJECTED' ? 'bg-red-500/10 text-red-700' :
+                        request.status === 'PENDING' ? 'bg-amber-500/10 text-amber-700' :
+                        'bg-muted/10 text-muted'
                       }`}
                     >
                       {request.status}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-black">{request.reason}</p>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-black">
-                    <span>
-                      By: {request.student.user.name ?? request.student.user.email}
+                  <p className="mt-3 text-sm text-muted leading-relaxed">{request.reason}</p>
+                  <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-bold uppercase tracking-widest text-muted/60">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                      {request.student.user.name ?? request.student.user.email}
                     </span>
                     <span>•</span>
-                    <span>Roll: {request.student.rollNo}</span>
+                    <span>Roll Identifier: {request.student.rollNo}</span>
                     {request.student.room && (
                       <>
                         <span>•</span>
-                        <span>Room {request.student.room.roomNumber}</span>
+                        <span>Unit {request.student.room.roomNumber}</span>
                       </>
                     )}
                     <span>•</span>
-                    <span>
-                      Applied: {new Date(request.createdAt).toLocaleDateString()}
-                    </span>
+                    <span>Applied {new Date(request.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
                 {request.status === "PENDING" && (
@@ -126,16 +127,16 @@ export default function WardenLeaveRequestsPage() {
                     <button
                       onClick={() => handleAction(request.id, "APPROVED")}
                       disabled={updating === request.id}
-                      className="inline-flex h-9 items-center rounded-md bg-green-600 px-4 text-xs font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="btn-bespoke px-4 py-2 text-[10px] font-bold uppercase tracking-widest shadow-sm active:translate-y-0.5"
                     >
-                      Approve
+                      Authorize
                     </button>
                     <button
                       onClick={() => handleAction(request.id, "REJECTED")}
                       disabled={updating === request.id}
-                      className="inline-flex h-9 items-center rounded-md bg-red-600 px-4 text-xs font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors active:translate-y-0.5"
                     >
-                      Reject
+                      Decline
                     </button>
                   </div>
                 )}

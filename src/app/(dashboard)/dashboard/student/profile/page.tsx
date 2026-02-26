@@ -43,34 +43,34 @@ export default function StudentProfilePage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-black">My Profile</h1>
-        <p className="text-sm text-black">Basic student information.</p>
+        <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
+        <p className="mt-1 text-sm text-muted">Core institutional identity and contact records.</p>
       </div>
-      <div className="rounded-xl border border-zinc-200 bg-white p-6">
-        <dl className="grid gap-4 sm:grid-cols-2">
+      <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <dl className="grid gap-6 sm:grid-cols-2">
           <div>
-            <dt className="text-xs uppercase text-black">Name</dt>
-            <dd className="text-sm font-medium text-black">
-              {data.student.user.name ?? "Not set"}
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Legal Name</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
+              {data.student.user.name ?? "Not registered"}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-black">Email</dt>
-            <dd className="text-sm font-medium text-black">
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Email Address</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
               {data.student.user.email}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-black">Roll No</dt>
-            <dd className="text-sm font-medium text-black">
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Roll Number</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
               {data.student.rollNo}
             </dd>
           </div>
           <div>
-            <dt className="text-xs uppercase text-black">Parent Contact</dt>
-            <dd className="text-sm font-medium text-black">
+            <dt className="text-[10px] font-bold uppercase tracking-widest text-muted">Parental Contact</dt>
+            <dd className="mt-1 text-sm font-semibold text-foreground">
               {data.student.parentContact}
             </dd>
           </div>

@@ -86,11 +86,11 @@ export default function WardenRoomsPage() {
   const availableRooms = rooms.filter((r) => r.occupied < r.capacity);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Room Management</h1>
-        <p className="text-sm text-black">
-          View room occupancy and assign students to rooms.
+        <h1 className="text-3xl font-bold text-foreground">Infrastructure</h1>
+        <p className="mt-1 text-sm text-muted">
+          Residential capacity monitoring and institutional room assignments.
         </p>
       </div>
 
@@ -98,108 +98,115 @@ export default function WardenRoomsPage() {
       {unassigned.length > 0 && availableRooms.length > 0 && (
         <form
           onSubmit={handleAssign}
-          className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6"
+          className="space-y-6 rounded-xl border border-border bg-surface p-6 shadow-sm"
         >
-          <h2 className="text-lg font-semibold text-black">Assign Student to Room</h2>
-          <div className="grid gap-4 md:grid-cols-2">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-muted">Assign Resident to Room</h2>
+          <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-black" htmlFor="student-select">
-                Student
+              <label className="text-xs font-semibold text-foreground/70" htmlFor="student-select">
+                Resident Profile
               </label>
               <select
                 id="student-select"
                 value={assignStudentId}
                 onChange={(e) => setAssignStudentId(e.target.value)}
                 required
-                className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
+                className="input-bespoke"
               >
-                <option value="">Select student...</option>
+                <option value="">Select individual...</option>
                 {unassigned.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {s.user.name ?? s.user.email} ({s.rollNo})
+                    {s.user.name ?? s.user.email} (Roll: {s.rollNo})
                   </option>
                 ))}
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-black" htmlFor="room-select">
-                Room
+              <label className="text-xs font-semibold text-foreground/70" htmlFor="room-select">
+                Available Unit
               </label>
               <select
                 id="room-select"
                 value={assignRoomId}
                 onChange={(e) => setAssignRoomId(e.target.value)}
                 required
-                className="h-11 w-full rounded-md border border-zinc-200 bg-white px-3 text-sm text-black placeholder:text-black"
+                className="input-bespoke"
               >
-                <option value="">Select room...</option>
+                <option value="">Select residential unit...</option>
                 {availableRooms.map((r) => (
                   <option key={r.id} value={r.id}>
-                    {r.block.name} — Room {r.roomNumber} ({r.occupied}/{r.capacity})
+                    {r.block.name} · Room {r.roomNumber} ({r.occupied}/{r.capacity} Occupancy)
                   </option>
                 ))}
               </select>
             </div>
           </div>
-          {assignError && <p className="text-sm text-red-600">{assignError}</p>}
-          {assignSuccess && <p className="text-sm text-green-600">{assignSuccess}</p>}
-          <button
-            type="submit"
-            disabled={assigning}
-            className="inline-flex h-11 items-center justify-center rounded-md bg-zinc-900 px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
-          >
-            {assigning ? "Assigning..." : "Assign Room"}
-          </button>
+          {assignError && <p className="text-sm text-red-600 font-medium">{assignError}</p>}
+          {assignSuccess && <p className="text-sm text-primary font-medium">{assignSuccess}</p>}
+          <div>
+            <button
+              type="submit"
+              disabled={assigning}
+              className="btn-bespoke px-8 py-3 text-sm font-semibold shadow-sm active:translate-y-0.5"
+            >
+              {assigning ? "Processing Assignment..." : "Assign residential unit"}
+            </button>
+          </div>
         </form>
       )}
 
       {/* Room List */}
-      {loading ? (
-        <p className="text-sm text-black">Loading rooms...</p>
-      ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
-      ) : rooms.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="text-sm text-black">No rooms configured yet.</p>
-        </div>
-      ) : (
-        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-zinc-200 bg-zinc-50">
-              <tr>
-                <th className="px-4 py-3 font-medium text-black">Block</th>
-                <th className="px-4 py-3 font-medium text-black">Room</th>
-                <th className="px-4 py-3 font-medium text-black">Capacity</th>
-                <th className="px-4 py-3 font-medium text-black">Occupied</th>
-                <th className="px-4 py-3 font-medium text-black">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100">
-              {rooms.map((room) => (
-                <tr key={room.id} className="hover:bg-zinc-50">
-                  <td className="px-4 py-3 font-medium text-black">
-                    {room.block.name}
-                  </td>
-                  <td className="px-4 py-3 text-black">{room.roomNumber}</td>
-                  <td className="px-4 py-3 text-black">{room.capacity}</td>
-                  <td className="px-4 py-3 text-black">{room.occupied}</td>
-                  <td className="px-4 py-3">
-                    {room.occupied >= room.capacity ? (
-                      <span className="inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">
-                        Full
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        Available ({room.capacity - room.occupied} beds)
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">Residential Inventory</h2>
+        {loading ? (
+          <p className="text-sm text-muted">Syncing inventory data...</p>
+        ) : error ? (
+          <p className="text-sm text-red-600 font-medium">{error}</p>
+        ) : rooms.length === 0 ? (
+          <div className="rounded-xl border border-border bg-surface p-12 text-center">
+            <p className="text-sm text-muted">No residential units configured in the system.</p>
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-border bg-background/50 text-[10px] font-bold uppercase tracking-widest text-muted">
+                  <tr>
+                    <th className="px-6 py-4">Block identifier</th>
+                    <th className="px-6 py-4">Unit identifier</th>
+                    <th className="px-6 py-4">Total Capacity</th>
+                    <th className="px-6 py-4">Current Load</th>
+                    <th className="px-6 py-4">Operational Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/50">
+                  {rooms.map((room) => (
+                    <tr key={room.id} className="hover:bg-background/40 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-foreground">
+                        {room.block.name}
+                      </td>
+                      <td className="px-6 py-4 text-muted">{room.roomNumber}</td>
+                      <td className="px-6 py-4 text-muted">{room.capacity} beds</td>
+                      <td className="px-6 py-4 text-muted">{room.occupied} residents</td>
+                      <td className="px-6 py-4">
+                        {room.occupied >= room.capacity ? (
+                          <span className="inline-flex items-center rounded bg-red-500/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700">
+                            Maximum Capacity
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                            Operational ({room.capacity - room.occupied} available)
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

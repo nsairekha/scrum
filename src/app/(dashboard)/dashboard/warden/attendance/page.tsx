@@ -34,28 +34,59 @@ export default function WardenAttendancePage() {
   if (loading) return <p className="text-sm text-black">Loading students...</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold text-black">Mark Attendance</h1>
-  <p className="text-sm text-black">Toggle presence for students and save today&apos;s attendance.</p>
+        <h1 className="text-3xl font-bold text-foreground">Operational Verification</h1>
+        <p className="mt-1 text-sm text-muted">
+          Formal daily residential presence audit and verification system.
+        </p>
       </div>
 
-      <div className="rounded-xl border border-zinc-200 bg-white p-4">
-        <div className="space-y-2">
+      <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-muted">Daily Presence Log</h2>
+        <div className="mt-6 grid gap-3">
           {students.map((s) => (
-            <label key={s.id} className="flex items-center justify-between rounded-md border p-2">
-              <div>
-                <div className="font-medium text-black">{s.user.name ?? s.user.email}</div>
-                <div className="text-sm text-black">Roll: {s.rollNo} {s.room && `• Room ${s.room.roomNumber}`}</div>
+            <label
+              key={s.id}
+              className="flex items-center justify-between rounded-xl border border-border/50 p-4 transition-all hover:border-primary/30 hover:bg-background/40 cursor-pointer group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-xs ring-4 ring-primary/5 transition-transform group-hover:scale-105">
+                  {s.user.name?.[0]?.toUpperCase() ?? "R"}
+                </div>
+                <div>
+                  <div className="font-bold text-foreground text-sm group-hover:text-primary transition-colors">
+                    {s.user.name ?? s.user.email}
+                  </div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted/70 mt-0.5">
+                    Roll: {s.rollNo} {s.room && `• Unit ${s.room.roomNumber}`}
+                  </div>
+                </div>
               </div>
-              <input type="checkbox" checked={!!checked[s.id]} onChange={() => toggle(s.id)} />
+              <div className="relative inline-flex items-center h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-muted/20 has-[:checked]:bg-primary">
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  checked={!!checked[s.id]}
+                  onChange={() => toggle(s.id)}
+                />
+                <span
+                  className={`pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform ${
+                    checked[s.id] ? "translate-x-5" : "translate-x-0.5"
+                  }`}
+                />
+              </div>
             </label>
           ))}
         </div>
 
-        <div className="mt-4">
-          <button onClick={save} disabled={saving} className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white disabled:opacity-50">
-            {saving ? 'Saving...' : 'Save Attendance'}
+        <div className="mt-8 border-t border-border pt-6">
+          <button
+            onClick={save}
+            disabled={saving}
+            className="btn-bespoke px-8 py-3 text-sm font-semibold shadow-sm active:translate-y-0.5"
+          >
+            {saving ? "Finalizing Audit..." : "Finalize presence audit"}
           </button>
         </div>
       </div>

@@ -50,34 +50,39 @@ export default function DashboardShell({
   );
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-background">
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r border-zinc-200 bg-white px-4 py-6 transition-transform duration-200 md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r border-border bg-surface px-4 py-6 transition-transform duration-200 md:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold text-black">
-            Hostel Management
+          <Link href="/" className="group flex items-center gap-2">
+            <div className="h-8 w-8 bg-primary flex items-center justify-center shadow-sm transition-transform group-hover:scale-105">
+              <span className="text-background font-bold text-sm uppercase tracking-tighter">H</span>
+            </div>
+            <span className="text-lg font-bold tracking-tight text-foreground uppercase italic">
+              Hostel<span className="text-primary font-serif font-light lowercase">Mari</span>
+            </span>
           </Link>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="rounded-md p-2 text-black hover:text-black md:hidden"
+            className="rounded-lg p-2 text-foreground hover:bg-background md:hidden"
             aria-label="Close menu"
           >
             ✕
           </button>
         </div>
-        <div className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-black">
-          Role: <span className="font-semibold text-black">{role}</span>
+        <div className="mt-6 rounded-xl border border-border bg-background px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-muted">
+          Access: <span className="text-primary">{role}</span>
         </div>
         <nav className="mt-6 space-y-1">
           {menuItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="block rounded-md px-3 py-2 text-sm text-black hover:bg-zinc-100"
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-background hover:text-primary transition-colors"
               onClick={() => setIsOpen(false)}
             >
               {item.label}
@@ -89,35 +94,35 @@ export default function DashboardShell({
       {isOpen ? (
         <button
           type="button"
-          className="fixed inset-0 z-30 bg-black/30 md:hidden"
+          className="fixed inset-0 z-30 bg-black/20 backdrop-blur-sm md:hidden"
           onClick={() => setIsOpen(false)}
           aria-label="Close menu overlay"
         />
       ) : null}
 
       <div className="min-h-screen md:pl-64">
-        <header className="sticky top-0 z-20 border-b border-zinc-200 bg-white/95 backdrop-blur">
+        <header className="sticky top-0 z-20 border-b border-border bg-surface/80 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="rounded-md border border-zinc-200 px-2 py-1 text-sm text-black md:hidden"
+                className="rounded-lg border border-border bg-surface px-3 py-1 text-xs font-semibold text-foreground md:hidden hover:bg-background transition-colors"
                 aria-label="Open menu"
               >
                 Menu
               </button>
-              <span className="text-sm font-semibold text-black">
-                Dashboard
-              </span>
+              <h1 className="text-sm font-bold text-foreground tracking-tight">
+                Dashboard Overview
+              </h1>
             </div>
             <div className="flex items-center gap-4">
-              <span className="hidden text-sm text-black dark:text-black md:block">
+              <span className="hidden text-xs font-medium text-muted md:block">
                 {userEmail}
               </span>
               <NotificationBell />
               <ThemeToggle />
-              <Link href="/login" className="text-sm text-black dark:text-black">
+              <Link href="/login" className="text-xs font-semibold text-primary hover:text-accent transition-colors">
                 Switch account
               </Link>
             </div>
