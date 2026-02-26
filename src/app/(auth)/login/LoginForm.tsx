@@ -46,11 +46,11 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-10">
-      <div className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-4">
         <div className="space-y-2">
-          <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted block" htmlFor="email">
-            Identification / Email
+          <label className="text-sm font-medium text-foreground/70 block" htmlFor="email">
+            Email
           </label>
           <input
             id="email"
@@ -60,12 +60,12 @@ export default function LoginForm() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             className="input-bespoke"
-            placeholder="institution@local"
+            placeholder="your@email.com"
           />
         </div>
         <div className="space-y-2">
-          <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted block" htmlFor="password">
-            Security Key / Password
+          <label className="text-sm font-medium text-foreground/70 block" htmlFor="password">
+            Password
           </label>
           <input
             id="password"
@@ -75,31 +75,31 @@ export default function LoginForm() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             className="input-bespoke"
-            placeholder="••••••••"
+            placeholder="Minimum 8 characters"
           />
         </div>
       </div>
 
       {error ? (
-        <div className="p-3 border border-red-200 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+        <div className="p-3 border border-red-200 bg-red-50 text-red-700 text-xs font-medium rounded-lg">
           {error}
         </div>
       ) : null}
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="btn-bespoke w-full py-4 text-xs uppercase tracking-[0.2em] shadow-sm active:translate-y-0.5"
+          className="btn-bespoke w-full py-3 text-sm font-semibold shadow-sm active:translate-y-0.5"
         >
-          {isSubmitting ? "Processing..." : "Grant Access"}
+          {isSubmitting ? "Processing..." : "Sign in"}
         </button>
         
         <div className="text-center">
-          <span className="text-xs text-muted uppercase tracking-widest">
-            New Account?{" "}
-            <Link href="/signup" className="font-bold text-primary hover:text-accent transition-colors underline underline-offset-4 decoration-primary/20 hover:decoration-primary">
-              Register
+          <span className="text-sm text-muted">
+            Need an account?{" "}
+            <Link href="/signup" className="font-semibold text-primary hover:text-accent transition-colors">
+              Sign up
             </Link>
           </span>
         </div>
