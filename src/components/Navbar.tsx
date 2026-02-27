@@ -13,7 +13,7 @@ export function Navbar() {
               <span className="text-white font-bold text-sm">H</span>
             </div>
             <span className="text-lg font-bold tracking-tight text-foreground uppercase">
-              Hostel<span className="text-primary italic">Mari</span>
+              Hostel<span className="text-primary italic">Hub</span>
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8">

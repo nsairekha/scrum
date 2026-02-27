@@ -13,7 +13,7 @@ export function Footer() {
                 <span className="text-white font-bold text-sm">H</span>
               </div>
               <span className="text-lg font-bold tracking-tight text-foreground">
-                Hostel<span className="text-primary">Mari</span>
+                Hostel<span className="text-primary">Hub</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted">
@@ -54,7 +54,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted">
-            &copy; {currentYear} HostelMari. All rights reserved. Built with precision for premium management.
+            &copy; {currentYear} HostelHub. All rights reserved. Built with precision for premium management.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-xs text-muted hover:text-primary transition-colors">Privacy Policy</a>

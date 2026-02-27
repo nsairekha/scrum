@@ -94,6 +94,40 @@ async function main() {
   }
   console.log("✅ 10 rooms created for Block A");
 
+  // Get the first room for assignment
+  const firstRoom = await prisma.room.findFirst({
+    where: { blockId: block.id },
+    orderBy: { roomNumber: 'asc' }
+  });
+
+  if (firstRoom) {
+     await prisma.student.update({
+      where: { id: student.id },
+      data: { roomId: firstRoom.id }
+    });
+    
+    // Update occupied count
+    await prisma.room.update({
+      where: { id: firstRoom.id },
+      data: { occupied: 1 }
+    });
+    console.log(`✅ Student assigned to room: ${firstRoom.roomNumber}`);
+
+    // Create a sample complaint
+    await prisma.complaint.upsert({
+      where: { id: "sample-complaint-1" },
+      update: {},
+      create: {
+        id: "sample-complaint-1",
+        studentId: student.id,
+        title: "Fan not working",
+        description: "The ceiling fan in room A-001 is making a clicking sound and rotating slowly.",
+        status: "OPEN"
+      }
+    });
+    console.log("✅ Sample complaint created");
+  }
+
   console.log("\n🎉 Seeding complete!\n");
   console.log("📋 Default Credentials:");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");

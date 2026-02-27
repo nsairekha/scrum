@@ -127,7 +127,7 @@ export default function Home() {
               <div className="space-y-4">
                 <h4 className="text-lg font-bold text-foreground">03. Technical Requirements</h4>
                 <p className="text-sm text-muted leading-relaxed border-l border-primary/40 pl-6">
-                  HostelMari is a responsive web application optimized for modern browsers on both desktop and mobile devices.
+                  HostelHub is a responsive web application optimized for modern browsers on both desktop and mobile devices.
                 </p>
               </div>
             </div>

@@ -62,7 +62,7 @@ export default function DashboardShell({
               <span className="text-background font-bold text-sm uppercase tracking-tighter">H</span>
             </div>
             <span className="text-lg font-bold tracking-tight text-foreground uppercase italic">
-              Hostel<span className="text-primary font-serif font-light lowercase">Mari</span>
+              Hostel<span className="text-primary font-serif font-light lowercase">hub</span>
             </span>
           </Link>
           <button
